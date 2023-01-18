@@ -3,10 +3,13 @@ use std::time::Duration;
 
 use routes::create_routes;
 use sea_orm::{ConnectOptions, Database};
-use tracing::log;
+use tracing::{log, info};
 
 pub async fn init(database_uri: &str) {
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt()
+    .with_max_level(tracing::Level::DEBUG)
+    .with_test_writer()
+    .init();
     let mut opt = ConnectOptions::new(database_uri.to_owned());
 opt.max_connections(100)
     .min_connections(5)
@@ -15,8 +18,8 @@ opt.max_connections(100)
     .idle_timeout(Duration::from_secs(8))
     .max_lifetime(Duration::from_secs(8))
     .sqlx_logging(true)
-    .sqlx_logging_level(log::LevelFilter::Info)
-    .set_schema_search_path("euterpe_schema".into()); 
+    .sqlx_logging_level(log::LevelFilter::Info);
+    // .set_schema_search_path("euterpe_schema".into());
     let db = Database::connect(opt).await.unwrap();
 
     let app = create_routes(db);
@@ -24,7 +27,7 @@ opt.max_connections(100)
 
 
 
-    tracing::info!("listening on {}", &addr);
+    info!("listening on {}", &addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
