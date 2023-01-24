@@ -1,5 +1,5 @@
-use axum::{routing::get, extract::FromRef};
 use axum::Router;
+use axum::{extract::FromRef, routing::get};
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -11,10 +11,12 @@ pub struct AppState {
     database: DatabaseConnection,
 }
 
-pub fn create_routes(db:DatabaseConnection) -> Router<()> {
+pub fn create_routes(db: DatabaseConnection) -> Router<()> {
     let cors = CorsLayer::new().allow_origin(Any);
     let app_state = AppState { database: db };
 
-    Router::new().route("/", get(health_check)).layer(cors)
-    .with_state(app_state)
+    Router::new()
+        .route("/", get(health_check))
+        .layer(cors)
+        .with_state(app_state)
 }
