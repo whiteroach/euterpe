@@ -7,22 +7,27 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
-        todo!();
+
 
         manager
             .create_table(
                 Table::create()
-                    .table(Post::Table)
+                    .table(Users::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Post::Id)
+                        ColumnDef::new(Users::UserId)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Post::Title).string().not_null())
-                    .col(ColumnDef::new(Post::Text).string().not_null())
+                    .col(ColumnDef::new(Users::FirstName).string().not_null())
+                    .col(ColumnDef::new(Users::LastName).string().not_null())
+                    .col(ColumnDef::new(Users::Username).string().not_null())
+                    .col(ColumnDef::new(Users::Email).string().not_null())
+                    .col(ColumnDef::new(Users::UserType).string().not_null())
+                    .col(ColumnDef::new(Users::Online).boolean().not_null())
+                    .col(ColumnDef::new(Users::DeletedAt).date())
                     .to_owned(),
             )
             .await
@@ -30,19 +35,22 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
-        todo!();
-
         manager
-            .drop_table(Table::drop().table(Post::Table).to_owned())
+            .drop_table(Table::drop().table(Users::Table).to_owned())
             .await
     }
 }
 
 /// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-enum Post {
+pub enum Users {
     Table,
-    Id,
-    Title,
-    Text,
+    UserId,
+    FirstName,
+    LastName,
+    Username,
+    Email,
+    UserType,
+    Online,
+    DeletedAt
 }
