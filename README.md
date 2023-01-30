@@ -18,3 +18,19 @@ docker run -p 8000:8000 -h euterpe
 **Curiosity:**
 
 > Euterpe was one of the Muses in Greek mythology, presiding over music.</br> - [Wikipedia](https://en.wikipedia.org/wiki/Euterpe)
+
+**Todo:** </br>
+
+- [ ] Add migrations for:
+
+- - [ ] Labels
+- - [ ] Albums
+- - [ ] artist_label
+- - [ ] user_picture
+- - [ ] album_picture
+- - [ ] album_track_list
+- - [ ] playlist_track_list
+        <br>
+
+- [ ] Generate entities
+- [ ] Add docker-compose
