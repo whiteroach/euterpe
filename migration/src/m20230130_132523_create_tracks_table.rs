@@ -1,4 +1,4 @@
-use super::m20220101_000001_create_user_table::Users;
+use super::m20230126_165306_create_genres_table::Genres;
 use sea_orm_migration::prelude::*;
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -11,23 +11,26 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Playlists::Table)
+                    .table(Tracks::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Playlists::PlaylistId)
+                        ColumnDef::new(Tracks::TrackId)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Playlists::Title).string().not_null())
-                    .col(ColumnDef::new(Playlists::Duration).time().not_null())
-                    .col(ColumnDef::new(Playlists::UserId).integer())
+                    .col(ColumnDef::new(Tracks::Title).string().not_null())
+                    .col(ColumnDef::new(Tracks::Duration).time().not_null())
+                    .col(ColumnDef::new(Tracks::LinkAudio).string())
+                    .col(ColumnDef::new(Tracks::Bpm).integer())
+                    .col(ColumnDef::new(Tracks::DeletedAt).timestamp())
+                    .col(ColumnDef::new(Tracks::GenreId).integer())
                     .foreign_key(
                         sea_query::ForeignKey::create()
-                            .name("user_id")
-                            .from(Playlists::Table, Playlists::UserId)
-                            .to(Users::Table, Users::UserId),
+                            .name("genre_id")
+                            .from(Tracks::Table, Tracks::GenreId)
+                            .to(Genres::Table, Genres::GenreId),
                     )
                     .to_owned(),
             )
@@ -38,17 +41,20 @@ impl MigrationTrait for Migration {
         // Replace the sample below with your own migration scripts
 
         manager
-            .drop_table(Table::drop().table(Playlists::Table).to_owned())
+            .drop_table(Table::drop().table(Tracks::Table).to_owned())
             .await
     }
 }
 
 /// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-enum Playlists {
+pub enum Tracks {
     Table,
-    PlaylistId,
+    TrackId,
     Title,
     Duration,
-    UserId,
+    LinkAudio,
+    Bpm,
+    DeletedAt,
+    GenreId,
 }

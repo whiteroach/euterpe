@@ -5,3 +5,4 @@
 /migration/Cargo.lock
 /entity/target
 /entity/Cargo.lock
+genres_track.sql

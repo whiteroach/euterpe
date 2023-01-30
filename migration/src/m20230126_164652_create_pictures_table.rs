@@ -38,5 +38,5 @@ impl MigrationTrait for Migration {
 enum Pictures {
     Table,
     PictureId,
-    Path
+    Path,
 }

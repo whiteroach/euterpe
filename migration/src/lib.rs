@@ -4,7 +4,7 @@ mod m20220101_000001_create_user_table;
 mod m20230126_164652_create_pictures_table;
 mod m20230126_165306_create_genres_table;
 mod m20230126_165620_create_playlists_table;
-
+mod m20230130_132523_create_tracks_table;
 
 pub struct Migrator;
 
@@ -16,6 +16,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20230126_164652_create_pictures_table::Migration),
             Box::new(m20230126_165306_create_genres_table::Migration),
             Box::new(m20230126_165620_create_playlists_table::Migration),
+            Box::new(m20230130_132523_create_tracks_table::Migration),
         ]
     }
 }

@@ -20,7 +20,7 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(Genres::Name).string().not_null())
-                    .col(ColumnDef::new(Genres::SubOfId).string().not_null())
+                    .col(ColumnDef::new(Genres::SubOfId).string())
                     .to_owned(),
             )
             .await
@@ -36,7 +36,7 @@ impl MigrationTrait for Migration {
 
 /// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-enum Genres {
+pub(crate) enum Genres {
     Table,
     GenreId,
     Name,

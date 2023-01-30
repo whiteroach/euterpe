@@ -1,9 +1,9 @@
 mod routes;
-use std::{time::Duration};
+use std::time::Duration;
 // use axum::Server;
 // use hyper::StatusCode;
 // use axum::{routing::IntoMakeService, Server, Router, body::Body};
-use migration::{Migrator, MigratorTrait, DbErr};
+use migration::{DbErr, Migrator, MigratorTrait};
 
 use routes::create_routes;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
@@ -32,7 +32,7 @@ use tracing::{info, log};
 //     Ok(db)
 
 // }
-pub async fn init(database_uri: &str)  {
+pub async fn init(database_uri: &str) {
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
         .with_test_writer()
@@ -51,7 +51,6 @@ pub async fn init(database_uri: &str)  {
     // let db = database_connector(database_uri).await.map_err(|e|{ return "Hey".to_owned()})?;
 
     Migrator::up(&db, None).await.unwrap();
-
 
     let app = create_routes(db);
     let addr = "0.0.0.0:8000".parse().unwrap();

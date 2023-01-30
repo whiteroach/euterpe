@@ -8,7 +8,6 @@ impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
 
-
         manager
             .create_table(
                 Table::create()
@@ -52,5 +51,5 @@ pub enum Users {
     Email,
     UserType,
     Online,
-    DeletedAt
+    DeletedAt,
 }
