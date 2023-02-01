@@ -22,9 +22,8 @@ docker run -p 8000:8000 -h euterpe
 **Todo:** </br>
 
 - [ ] Add migrations for:
-
 - - [x] Labels
-- - [ ] Albums
+- - [x] Albums
 - - [ ] artist_label
 - - [ ] user_picture
 - - [ ] album_picture

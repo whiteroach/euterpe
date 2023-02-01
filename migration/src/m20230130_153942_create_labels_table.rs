@@ -22,13 +22,19 @@ impl MigrationTrait for Migration {
                     )
                     .col(ColumnDef::new(Labels::Name).string().not_null())
                     .col(ColumnDef::new(Labels::Info).json())
-                    .col(ColumnDef::new(Labels::Owned).boolean().default(false).not_null())
+                    .col(
+                        ColumnDef::new(Labels::Owned)
+                            .boolean()
+                            .default(false)
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Labels::Year).date())
                     .col(ColumnDef::new(Labels::GenreId).integer())
-                    .foreign_key(sea_query::ForeignKey::create()
-                        .name("genre_id")
-                        .from(Labels::Table, Labels::GenreId)
-                        .to(Genres::Table, Genres::GenreId)
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("genre_id")
+                            .from(Labels::Table, Labels::GenreId)
+                            .to(Genres::Table, Genres::GenreId),
                     )
                     .to_owned(),
             )
@@ -42,14 +48,13 @@ impl MigrationTrait for Migration {
     }
 }
 
-
 #[derive(Iden)]
-enum Labels {
+pub enum Labels {
     Table,
     LabelId,
     Name,
     Info,
     Owned,
     Year,
-    GenreId
+    GenreId,
 }

@@ -3,10 +3,10 @@ use std::time::Duration;
 // use axum::Server;
 // use hyper::StatusCode;
 // use axum::{routing::IntoMakeService, Server, Router, body::Body};
-use migration::{DbErr, Migrator, MigratorTrait};
+use migration::{Migrator, MigratorTrait};
 
 use routes::create_routes;
-use sea_orm::{ConnectOptions, Database, DatabaseConnection};
+use sea_orm::{ConnectOptions, Database};
 use tracing::{info, log};
 // use hyper::server::conn::AddrIncoming;
 // Server<AddrIncoming, IntoMakeService<Router<(),Body>, Exec>>::Output
