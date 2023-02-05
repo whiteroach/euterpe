@@ -24,8 +24,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Users::LastName).string().not_null())
                     .col(ColumnDef::new(Users::Username).string().not_null())
                     .col(ColumnDef::new(Users::Email).string().not_null())
-                    .col(ColumnDef::new(Users::UserType).string().not_null())
-                    .col(ColumnDef::new(Users::Online).boolean().not_null())
+                    .col(ColumnDef::new(Users::UserType).string().not_null().default("standard"))
+                    .col(ColumnDef::new(Users::Online).boolean().not_null().default(false))
                     .col(ColumnDef::new(Users::DeletedAt).date())
                     .to_owned(),
             )

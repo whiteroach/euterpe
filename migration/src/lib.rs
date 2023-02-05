@@ -7,6 +7,7 @@ mod m20230126_165620_create_playlists_table;
 mod m20230130_132523_create_tracks_table;
 mod m20230130_153942_create_labels_table;
 mod m20230130_160353_create_albums_table;
+mod m20230204_232031_create_bands_table;
 
 pub struct Migrator;
 
@@ -21,6 +22,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20230130_132523_create_tracks_table::Migration),
             Box::new(m20230130_153942_create_labels_table::Migration),
             Box::new(m20230130_160353_create_albums_table::Migration),
+            Box::new(m20230204_232031_create_bands_table::Migration),
         ]
     }
 }
