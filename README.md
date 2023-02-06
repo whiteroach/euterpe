@@ -24,7 +24,7 @@ docker run -p 8000:8000 -h euterpe
 - [ ] Add migrations for:
 - - [x] Labels
 - - [x] Albums
-- - [ ] Bands
+- - [x] Bands
 - - [ ] band_artist
 - - [ ] band_label
 - - [ ] artist_label

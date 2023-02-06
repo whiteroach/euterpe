@@ -1,6 +1,6 @@
 use sea_orm_migration::prelude::*;
 
-use crate::{m20230130_153942_create_labels_table::Labels, m20230126_165306_create_genres_table::Genres, m20220101_000001_create_users_table::Users};
+use crate::{m20230130_153942_create_labels_table::Labels, m20230126_165306_create_genres_table::Genres, m20220101_000001_create_users_table::Users, m20230204_232031_create_bands_table::Bands};
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
@@ -27,7 +27,8 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Albums::DeletedAt).timestamp())
                     .col(ColumnDef::new(Albums::LabelId).integer())
                     .col(ColumnDef::new(Albums::GenreId).integer())
-                    .col(ColumnDef::new(Albums::ArtistId).integer())
+                    .col(ColumnDef::new(Albums::UserId).integer())
+                    .col(ColumnDef::new(Albums::BandId).integer())
                     .foreign_key(sea_query::ForeignKey::create()
                         .name("label_id")
                         .from(Albums::Table, Albums::LabelId)
@@ -39,9 +40,14 @@ impl MigrationTrait for Migration {
                         .to(Genres::Table, Genres::GenreId)
                     )
                     .foreign_key(sea_query::ForeignKey::create()
-                        .name("artist_id")
-                        .from(Albums::Table, Albums::ArtistId)
+                        .name("user_id")
+                        .from(Albums::Table, Albums::UserId)
                         .to(Users::Table, Users::UserId)
+                    )
+                    .foreign_key(sea_query::ForeignKey::create()
+                        .name("band_id")
+                        .from(Albums::Table, Albums::UserId)
+                        .to(Bands::Table, Bands::BandId)
                     )
                     .to_owned(),
             )
@@ -68,5 +74,6 @@ enum Albums {
     DeletedAt,
     LabelId,
     GenreId,
-    ArtistId,
+    UserId,
+    BandId
 }
