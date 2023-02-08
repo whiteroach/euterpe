@@ -19,8 +19,18 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(Bands::Name).string().not_null())
-                    .col(ColumnDef::new(Bands::Active).boolean().not_null().default(true))
-                    .col(ColumnDef::new(Bands::Owned).boolean().default(false).not_null())
+                    .col(
+                        ColumnDef::new(Bands::Active)
+                            .boolean()
+                            .not_null()
+                            .default(true),
+                    )
+                    .col(
+                        ColumnDef::new(Bands::Owned)
+                            .boolean()
+                            .default(false)
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Bands::DeletedAt).timestamp())
                     .to_owned(),
             )
@@ -42,5 +52,5 @@ pub enum Bands {
     Name,
     Active,
     Owned,
-    DeletedAt
+    DeletedAt,
 }

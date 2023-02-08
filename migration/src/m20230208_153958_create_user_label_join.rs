@@ -1,33 +1,38 @@
-use super::m20220101_000001_create_users_table::Users;
 use sea_orm_migration::prelude::*;
+
+use crate::{m20230130_153942_create_labels_table::Labels, m20220101_000001_create_users_table::Users};
+
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        // Replace the sample below with your own migration scripts
-
         manager
             .create_table(
                 Table::create()
-                    .table(Playlists::Table)
+                    .table(UserLabel::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Playlists::PlaylistId)
+                        ColumnDef::new(UserLabel::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Playlists::Title).string().not_null())
-                    .col(ColumnDef::new(Playlists::Duration).time().not_null())
-                    .col(ColumnDef::new(Playlists::UserId).integer())
+                    .col(ColumnDef::new(UserLabel::UserId).integer().not_null())
+                    .col(ColumnDef::new(UserLabel::LabelId).integer().not_null())
                     .foreign_key(
                         sea_query::ForeignKey::create()
                             .name("user_id")
-                            .from(Playlists::Table, Playlists::UserId)
+                            .from(UserLabel::Table, UserLabel::UserId)
                             .to(Users::Table, Users::UserId),
+                    )
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("label_id")
+                            .from(UserLabel::Table, UserLabel::LabelId)
+                            .to(Labels::Table, Labels::LabelId),
                     )
                     .to_owned(),
             )
@@ -35,20 +40,16 @@ impl MigrationTrait for Migration {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        // Replace the sample below with your own migration scripts
-
         manager
-            .drop_table(Table::drop().table(Playlists::Table).to_owned())
+            .drop_table(Table::drop().table(UserLabel::Table).to_owned())
             .await
     }
 }
 
-/// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-pub enum Playlists {
+enum UserLabel {
     Table,
-    PlaylistId,
-    Title,
-    Duration,
+    Id,
     UserId,
+    LabelId,
 }

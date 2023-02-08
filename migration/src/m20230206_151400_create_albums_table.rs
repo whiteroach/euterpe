@@ -1,6 +1,9 @@
 use sea_orm_migration::prelude::*;
 
-use crate::{m20230130_153942_create_labels_table::Labels, m20230126_165306_create_genres_table::Genres, m20220101_000001_create_users_table::Users, m20230204_232031_create_bands_table::Bands};
+use crate::{
+    m20220101_000001_create_users_table::Users, m20230126_165306_create_genres_table::Genres,
+    m20230130_153942_create_labels_table::Labels, m20230204_232031_create_bands_table::Bands,
+};
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
@@ -29,25 +32,29 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Albums::GenreId).integer())
                     .col(ColumnDef::new(Albums::UserId).integer())
                     .col(ColumnDef::new(Albums::BandId).integer())
-                    .foreign_key(sea_query::ForeignKey::create()
-                        .name("label_id")
-                        .from(Albums::Table, Albums::LabelId)
-                        .to(Labels::Table, Labels::LabelId)
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("label_id")
+                            .from(Albums::Table, Albums::LabelId)
+                            .to(Labels::Table, Labels::LabelId),
                     )
-                    .foreign_key(sea_query::ForeignKey::create()
-                        .name("genre_id")
-                        .from(Albums::Table, Albums::GenreId)
-                        .to(Genres::Table, Genres::GenreId)
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("genre_id")
+                            .from(Albums::Table, Albums::GenreId)
+                            .to(Genres::Table, Genres::GenreId),
                     )
-                    .foreign_key(sea_query::ForeignKey::create()
-                        .name("user_id")
-                        .from(Albums::Table, Albums::UserId)
-                        .to(Users::Table, Users::UserId)
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("user_id")
+                            .from(Albums::Table, Albums::UserId)
+                            .to(Users::Table, Users::UserId),
                     )
-                    .foreign_key(sea_query::ForeignKey::create()
-                        .name("band_id")
-                        .from(Albums::Table, Albums::UserId)
-                        .to(Bands::Table, Bands::BandId)
+                    .foreign_key(
+                        sea_query::ForeignKey::create()
+                            .name("band_id")
+                            .from(Albums::Table, Albums::UserId)
+                            .to(Bands::Table, Bands::BandId),
                     )
                     .to_owned(),
             )
@@ -63,7 +70,7 @@ impl MigrationTrait for Migration {
 
 /// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
-enum Albums {
+pub enum Albums {
     Table,
     AlbumId,
     Title,
@@ -75,5 +82,5 @@ enum Albums {
     LabelId,
     GenreId,
     UserId,
-    BandId
+    BandId,
 }

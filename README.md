@@ -25,13 +25,14 @@ docker run -p 8000:8000 -h euterpe
 - - [x] Labels
 - - [x] Albums
 - - [x] Bands
-- - [ ] band_artist
-- - [ ] band_label
-- - [ ] artist_label
-- - [ ] user_picture
-- - [ ] album_picture
-- - [ ] album_track_list
-- - [ ] playlist_track_list
+- - [x] band_user
+- - [x] band_label
+- - [x] user_label
+- - [x] band_picture
+- - [x] user_picture
+- - [x] album_picture
+- - [x] album_track
+- - [x] playlist_track_list
         <br>
 
 - [ ] Generate entities
