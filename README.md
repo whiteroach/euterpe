@@ -21,7 +21,7 @@ docker run -p 8000:8000 -h euterpe
 
 **Todo:** </br>
 
-- [ ] Add migrations for:
+- [x] Add migrations for:
 - - [x] Labels
 - - [x] Albums
 - - [x] Bands
@@ -35,5 +35,6 @@ docker run -p 8000:8000 -h euterpe
 - - [x] playlist_track_list
         <br>
 
-- [ ] Generate entities
+- [x] Generate entities
+- [ ] Set many-to-many relationships
 - [ ] Add docker-compose
