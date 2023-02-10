@@ -16,13 +16,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(AlbumTrack::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(AlbumTrack::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(AlbumTrack::AlbumId).integer().not_null())
                     .col(ColumnDef::new(AlbumTrack::TrackId).integer().not_null())
                     .foreign_key(
@@ -56,7 +49,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum AlbumTrack {
     Table,
-    Id,
     AlbumId,
     TrackId,
 }

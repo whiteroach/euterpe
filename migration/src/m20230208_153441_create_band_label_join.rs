@@ -13,13 +13,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(BandLabel::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(BandLabel::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(BandLabel::BandId).integer().not_null())
                     .col(ColumnDef::new(BandLabel::LabelId).integer().not_null())
                     .foreign_key(
@@ -50,7 +43,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum BandLabel {
     Table,
-    Id,
     BandId,
     LabelId,
 }

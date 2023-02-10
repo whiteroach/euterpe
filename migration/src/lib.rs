@@ -13,9 +13,9 @@ mod m20230208_153441_create_band_label_join;
 mod m20230208_153958_create_user_label_join;
 mod m20230208_154922_create_band_picture_join;
 mod m20230208_155504_create_user_picture_join;
-mod m20230208_160245_create_album__picture_join;
-mod m20230208_160902_create_album__track_join;
-mod m20230208_161415_create_playlist__track_join;
+mod m20230208_160245_create_album_picture_join;
+mod m20230208_160902_create_album_track_join;
+mod m20230208_161415_create_playlist_track_join;
 
 pub struct Migrator;
 
@@ -36,9 +36,9 @@ impl MigratorTrait for Migrator {
             Box::new(m20230208_153958_create_user_label_join::Migration),
             Box::new(m20230208_154922_create_band_picture_join::Migration),
             Box::new(m20230208_155504_create_user_picture_join::Migration),
-            Box::new(m20230208_160245_create_album__picture_join::Migration),
-            Box::new(m20230208_160902_create_album__track_join::Migration),
-            Box::new(m20230208_161415_create_playlist__track_join::Migration),
+            Box::new(m20230208_160245_create_album_picture_join::Migration),
+            Box::new(m20230208_160902_create_album_track_join::Migration),
+            Box::new(m20230208_161415_create_playlist_track_join::Migration),
         ]
     }
 }

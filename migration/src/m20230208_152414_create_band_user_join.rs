@@ -13,13 +13,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(BandUser::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(BandUser::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(BandUser::BandId).integer().not_null())
                     .col(ColumnDef::new(BandUser::UserId).integer().not_null())
                     .foreign_key(
@@ -49,7 +42,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum BandUser {
     Table,
-    Id,
     BandId,
     UserId,
 }

@@ -13,13 +13,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(UserPicture::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(UserPicture::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(UserPicture::UserId).integer().not_null())
                     .col(ColumnDef::new(UserPicture::PictureId).integer().not_null())
                     .foreign_key(
@@ -50,7 +43,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum UserPicture {
     Table,
-    Id,
     UserId,
     PictureId,
 }

@@ -13,13 +13,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(AlbumPicture::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(AlbumPicture::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(AlbumPicture::AlbumId).integer().not_null())
                     .col(ColumnDef::new(AlbumPicture::PictureId).integer().not_null())
                     .foreign_key(
@@ -49,7 +42,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum AlbumPicture {
     Table,
-    Id,
     AlbumId,
     PictureId,
 }

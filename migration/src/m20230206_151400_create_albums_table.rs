@@ -53,7 +53,7 @@ impl MigrationTrait for Migration {
                     .foreign_key(
                         sea_query::ForeignKey::create()
                             .name("band_id")
-                            .from(Albums::Table, Albums::UserId)
+                            .from(Albums::Table, Albums::BandId)
                             .to(Bands::Table, Bands::BandId),
                     )
                     .to_owned(),

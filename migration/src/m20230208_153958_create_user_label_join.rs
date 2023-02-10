@@ -13,13 +13,6 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(UserLabel::Table)
                     .if_not_exists()
-                    .col(
-                        ColumnDef::new(UserLabel::Id)
-                            .integer()
-                            .not_null()
-                            .auto_increment()
-                            .primary_key(),
-                    )
                     .col(ColumnDef::new(UserLabel::UserId).integer().not_null())
                     .col(ColumnDef::new(UserLabel::LabelId).integer().not_null())
                     .foreign_key(
@@ -49,7 +42,6 @@ impl MigrationTrait for Migration {
 #[derive(Iden)]
 enum UserLabel {
     Table,
-    Id,
     UserId,
     LabelId,
 }
