@@ -36,5 +36,5 @@ docker run -p 8000:8000 -h euterpe
         <br>
 
 - [x] Generate entities
-- [ ] Set many-to-many relationships
+- [ ] Set many-to-many relationships [sea-orm doc](https://www.sea-ql.org/SeaORM/docs/relation/many-to-many/)
 - [ ] Add docker-compose
