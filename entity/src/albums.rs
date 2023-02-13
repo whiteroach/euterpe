@@ -59,15 +59,29 @@ pub enum Relation {
     Users,
 }
 
-impl Related<super::album_picture::Entity> for Entity {
+// impl Related<super::album_picture::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::AlbumPicture.def()
+//     }
+// }
+
+//MANY-TO-MANY
+impl Related<super::pictures::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AlbumPicture.def()
+        super::album_picture::Relation::Pictures.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::album_picture::Relation::Albums.def().rev())
     }
 }
-
-impl Related<super::album_track::Entity> for Entity {
+//MANY-TO-MANY
+impl Related<super::tracks::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AlbumTrack.def()
+        super::album_track::Relation::Tracks.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_track::Relation::Albums.def().rev())
     }
 }
 

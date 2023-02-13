@@ -31,9 +31,27 @@ pub enum Relation {
     PlaylistTrack,
 }
 
-impl Related<super::album_track::Entity> for Entity {
+// impl Related<super::album_track::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::AlbumTrack.def()
+//     }
+// }
+//MANY-TO-MANY
+impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AlbumTrack.def()
+        super::album_track::Relation::Albums.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_track::Relation::Tracks.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::playlist::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::playlist_track::Relation::Playlist.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::playlist_track::Relation::Tracks.def().rev())
     }
 }
 
@@ -43,10 +61,10 @@ impl Related<super::genres::Entity> for Entity {
     }
 }
 
-impl Related<super::playlist_track::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::PlaylistTrack.def()
-    }
-}
+// impl Related<super::playlist_track::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::PlaylistTrack.def()
+//     }
+// }
 
 impl ActiveModelBehavior for ActiveModel {}

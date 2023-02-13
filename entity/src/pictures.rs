@@ -20,9 +20,37 @@ pub enum Relation {
     UserPicture,
 }
 
-impl Related<super::album_picture::Entity> for Entity {
+// impl Related<super::album_picture::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::AlbumPicture.def()
+//     }
+// }
+// }
+//MANY-TO-MANY
+impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AlbumPicture.def()
+        super::album_picture::Relation::Albums.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_picture::Relation::Pictures.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::bands::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::band_picture::Relation::Bands.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_picture::Relation::Pictures.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::users::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_picture::Relation::Users.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_picture::Relation::Pictures.def().rev())
     }
 }
 

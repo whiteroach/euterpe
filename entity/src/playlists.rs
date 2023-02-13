@@ -26,9 +26,18 @@ pub enum Relation {
     Users,
 }
 
-impl Related<super::playlist_track::Entity> for Entity {
+// impl Related<super::playlist_track::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::PlaylistTrack.def()
+//     }
+// }
+//MANY-TO-MANY
+impl Related<super::tracks::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::PlaylistTrack.def()
+        super::playlist_track::Relation::Tracks.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::playlist_track::Relation::Playlists.def().rev())
     }
 }
 

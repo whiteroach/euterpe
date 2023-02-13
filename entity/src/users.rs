@@ -36,9 +36,36 @@ impl Related<super::albums::Entity> for Entity {
     }
 }
 
-impl Related<super::band_user::Entity> for Entity {
+// impl Related<super::band_user::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::BandUser.def()
+//     }
+// }
+//MANY-TO-MANY
+impl Related<super::bands::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::BandUser.def()
+        super::band_user::Relation::Bands.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_user::Relation::Users.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::labels::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_label::Relation::Labels.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_label::Relation::Users.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::pictures::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_picture::Relation::Pictures.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_picture::Relation::Users.def().rev())
     }
 }
 
@@ -48,11 +75,11 @@ impl Related<super::playlists::Entity> for Entity {
     }
 }
 
-impl Related<super::user_label::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::UserLabel.def()
-    }
-}
+// impl Related<super::user_label::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::UserLabel.def()
+//     }
+// }
 
 impl Related<super::user_picture::Entity> for Entity {
     fn to() -> RelationDef {

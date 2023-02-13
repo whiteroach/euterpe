@@ -31,22 +31,49 @@ impl Related<super::albums::Entity> for Entity {
     }
 }
 
-impl Related<super::band_label::Entity> for Entity {
+// impl Related<super::band_label::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::BandLabel.def()
+//     }
+// }
+//MANY-TO-MANY
+impl Related<super::labels::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::BandLabel.def()
+        super::band_label::Relation::Labels.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_label::Relation::Bands.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::pictures::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::band_picture::Relation::Pictures.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_picture::Relation::Bands.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::users::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::band_user::Relation::Users.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_user::Relation::Bands.def().rev())
     }
 }
 
-impl Related<super::band_picture::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::BandPicture.def()
-    }
-}
+// impl Related<super::band_picture::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::BandPicture.def()
+//     }
+// }
 
-impl Related<super::band_user::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::BandUser.def()
-    }
-}
+// impl Related<super::band_user::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::BandUser.def()
+//     }
+// }
 
 impl ActiveModelBehavior for ActiveModel {}
