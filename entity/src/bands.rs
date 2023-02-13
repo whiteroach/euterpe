@@ -17,12 +17,6 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    // #[sea_orm(has_many = "super::band_label::Entity")]
-    // BandLabel,
-    // #[sea_orm(has_many = "super::band_picture::Entity")]
-    // BandPicture,
-    // #[sea_orm(has_many = "super::band_user::Entity")]
-    // BandUser,
 }
 
 impl Related<super::albums::Entity> for Entity {
@@ -31,11 +25,6 @@ impl Related<super::albums::Entity> for Entity {
     }
 }
 
-// impl Related<super::band_label::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::BandLabel.def()
-//     }
-// }
 //MANY-TO-MANY
 impl Related<super::labels::Entity> for Entity {
     fn to() -> RelationDef {
@@ -63,17 +52,5 @@ impl Related<super::users::Entity> for Entity {
         Some(super::band_user::Relation::Bands.def().rev())
     }
 }
-
-// impl Related<super::band_picture::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::BandPicture.def()
-//     }
-// }
-
-// impl Related<super::band_user::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::BandUser.def()
-//     }
-// }
 
 impl ActiveModelBehavior for ActiveModel {}

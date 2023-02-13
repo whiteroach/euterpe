@@ -11,21 +11,8 @@ pub struct Model {
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {
-    // #[sea_orm(has_many = "super::album_picture::Entity")]
-    // AlbumPicture,
-    // #[sea_orm(has_many = "super::band_picture::Entity")]
-    // BandPicture,
-    // #[sea_orm(has_many = "super::user_picture::Entity")]
-    // UserPicture,
-}
+pub enum Relation {}
 
-// impl Related<super::album_picture::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::AlbumPicture.def()
-//     }
-// }
-// }
 //MANY-TO-MANY
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {

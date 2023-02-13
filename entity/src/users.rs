@@ -20,14 +20,7 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    // #[sea_orm(has_many = "super::band_user::Entity")]
-    // BandUser,
-    #[sea_orm(has_many = "super::playlists::Entity")]
     Playlists,
-    // #[sea_orm(has_many = "super::user_label::Entity")]
-    // UserLabel,
-    // #[sea_orm(has_many = "super::user_picture::Entity")]
-    // UserPicture,
 }
 
 impl Related<super::albums::Entity> for Entity {
@@ -36,11 +29,6 @@ impl Related<super::albums::Entity> for Entity {
     }
 }
 
-// impl Related<super::band_user::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::BandUser.def()
-//     }
-// }
 //MANY-TO-MANY
 impl Related<super::bands::Entity> for Entity {
     fn to() -> RelationDef {
@@ -74,12 +62,6 @@ impl Related<super::playlists::Entity> for Entity {
         Relation::Playlists.def()
     }
 }
-
-// impl Related<super::user_label::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::UserLabel.def()
-//     }
-// }
 
 impl Related<super::user_picture::Entity> for Entity {
     fn to() -> RelationDef {

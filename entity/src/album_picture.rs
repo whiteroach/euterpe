@@ -11,21 +11,7 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    // #[sea_orm(
-    //     belongs_to = "super::albums::Entity",
-    //     from = "Column::AlbumId",
-    //     to = "super::albums::Column::AlbumId",
-    //     on_update = "NoAction",
-    //     on_delete = "NoAction"
-    // )]
     Albums,
-    // #[sea_orm(
-    //     belongs_to = "super::pictures::Entity",
-    //     from = "Column::PictureId",
-    //     to = "super::pictures::Column::PictureId",
-    //     on_update = "NoAction",
-    //     on_delete = "NoAction"
-    // )]
     Pictures,
 }
 impl RelationTrait for Relation {
@@ -37,16 +23,5 @@ impl RelationTrait for Relation {
         }
     }
 }
-// impl Related<super::albums::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::Albums.def()
-//     }
-// }
-
-// impl Related<super::pictures::Entity> for Entity {
-//     fn to() -> RelationDef {
-//         Relation::Pictures.def()
-//     }
-// }
 
 impl ActiveModelBehavior for ActiveModel {}
