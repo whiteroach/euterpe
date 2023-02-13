@@ -11,34 +11,44 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::playlists::Entity",
-        from = "Column::PlaylistId",
-        to = "super::playlists::Column::PlaylistId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::playlists::Entity",
+    //     from = "Column::PlaylistId",
+    //     to = "super::playlists::Column::PlaylistId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Playlists,
-    #[sea_orm(
-        belongs_to = "super::tracks::Entity",
-        from = "Column::TrackId",
-        to = "super::tracks::Column::TrackId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::tracks::Entity",
+    //     from = "Column::TrackId",
+    //     to = "super::tracks::Column::TrackId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Tracks,
 }
 
-impl Related<super::playlists::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Playlists.def()
-    }
-}
 
-impl Related<super::tracks::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Tracks.def()
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Playlists => Entity::belongs_to(super::playlists::Entity).from(Column::playlist_id
+            ).to(super::albums::Column::PlaylistId).into(),
+            Self::Tracks => Entity::belongs_to(super::tracks::Entity).from(Column::track_id).to(super::tracks::Column::TrackId).into(),
+        }
     }
 }
+// impl Related<super::playlists::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::Playlists.def()
+//     }
+// }
+
+// impl Related<super::tracks::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::Tracks.def()
+//     }
+// }
 
 impl ActiveModelBehavior for ActiveModel {}

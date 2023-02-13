@@ -18,8 +18,8 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(has_many = "super::band_label::Entity")]
-    BandLabel,
+    // #[sea_orm(has_many = "super::band_label::Entity")]
+    // BandLabel,
     #[sea_orm(
         belongs_to = "super::genres::Entity",
         from = "Column::GenreId",
@@ -28,8 +28,8 @@ pub enum Relation {
         on_delete = "NoAction"
     )]
     Genres,
-    #[sea_orm(has_many = "super::user_label::Entity")]
-    UserLabel,
+    // #[sea_orm(has_many = "super::user_label::Entity")]
+    // UserLabel,
 }
 
 impl Related<super::albums::Entity> for Entity {

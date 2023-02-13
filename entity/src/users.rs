@@ -20,14 +20,14 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(has_many = "super::band_user::Entity")]
-    BandUser,
+    // #[sea_orm(has_many = "super::band_user::Entity")]
+    // BandUser,
     #[sea_orm(has_many = "super::playlists::Entity")]
     Playlists,
-    #[sea_orm(has_many = "super::user_label::Entity")]
-    UserLabel,
-    #[sea_orm(has_many = "super::user_picture::Entity")]
-    UserPicture,
+    // #[sea_orm(has_many = "super::user_label::Entity")]
+    // UserLabel,
+    // #[sea_orm(has_many = "super::user_picture::Entity")]
+    // UserPicture,
 }
 
 impl Related<super::albums::Entity> for Entity {

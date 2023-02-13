@@ -12,12 +12,12 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::album_picture::Entity")]
-    AlbumPicture,
-    #[sea_orm(has_many = "super::band_picture::Entity")]
-    BandPicture,
-    #[sea_orm(has_many = "super::user_picture::Entity")]
-    UserPicture,
+    // #[sea_orm(has_many = "super::album_picture::Entity")]
+    // AlbumPicture,
+    // #[sea_orm(has_many = "super::band_picture::Entity")]
+    // BandPicture,
+    // #[sea_orm(has_many = "super::user_picture::Entity")]
+    // UserPicture,
 }
 
 // impl Related<super::album_picture::Entity> for Entity {

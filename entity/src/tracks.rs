@@ -17,8 +17,8 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::album_track::Entity")]
-    AlbumTrack,
+    // #[sea_orm(has_many = "super::album_track::Entity")]
+    // AlbumTrack,
     #[sea_orm(
         belongs_to = "super::genres::Entity",
         from = "Column::GenreId",
@@ -27,8 +27,8 @@ pub enum Relation {
         on_delete = "NoAction"
     )]
     Genres,
-    #[sea_orm(has_many = "super::playlist_track::Entity")]
-    PlaylistTrack,
+    // #[sea_orm(has_many = "super::playlist_track::Entity")]
+    // PlaylistTrack,
 }
 
 // impl Related<super::album_track::Entity> for Entity {

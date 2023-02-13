@@ -1,6 +1,9 @@
 use sea_orm_migration::prelude::*;
 
-use crate::{m20230126_165620_create_playlists_table::Playlists, m20230130_132523_create_tracks_table::Tracks};
+use crate::{
+    m20230126_165620_create_playlists_table::Playlists,
+    m20230130_132523_create_tracks_table::Tracks,
+};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -13,7 +16,11 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(PlaylistTrack::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(PlaylistTrack::PlaylistId).integer().not_null())
+                    .col(
+                        ColumnDef::new(PlaylistTrack::PlaylistId)
+                            .integer()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(PlaylistTrack::TrackId).integer().not_null())
                     .foreign_key(
                         sea_query::ForeignKey::create()

@@ -21,10 +21,10 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::album_picture::Entity")]
-    AlbumPicture,
-    #[sea_orm(has_many = "super::album_track::Entity")]
-    AlbumTrack,
+    // #[sea_orm(has_many = "super::album_picture::Entity")]
+    // AlbumPicture,
+    // #[sea_orm(has_many = "super::album_track::Entity")]
+    // AlbumTrack,
     #[sea_orm(
         belongs_to = "super::bands::Entity",
         from = "Column::BandId",

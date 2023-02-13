@@ -17,12 +17,12 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(has_many = "super::band_label::Entity")]
-    BandLabel,
-    #[sea_orm(has_many = "super::band_picture::Entity")]
-    BandPicture,
-    #[sea_orm(has_many = "super::band_user::Entity")]
-    BandUser,
+    // #[sea_orm(has_many = "super::band_label::Entity")]
+    // BandLabel,
+    // #[sea_orm(has_many = "super::band_picture::Entity")]
+    // BandPicture,
+    // #[sea_orm(has_many = "super::band_user::Entity")]
+    // BandUser,
 }
 
 impl Related<super::albums::Entity> for Entity {

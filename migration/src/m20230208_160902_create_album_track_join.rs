@@ -1,6 +1,8 @@
 use sea_orm_migration::prelude::*;
 
-use crate::{m20230206_151400_create_albums_table::Albums, m20230130_132523_create_tracks_table::Tracks};
+use crate::{
+    m20230130_132523_create_tracks_table::Tracks, m20230206_151400_create_albums_table::Albums,
+};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -9,7 +11,6 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
-        
 
         manager
             .create_table(
@@ -37,7 +38,6 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
-        
 
         manager
             .drop_table(Table::drop().table(AlbumTrack::Table).to_owned())
