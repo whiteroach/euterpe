@@ -16,21 +16,36 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::albums::Entity")]
+    // #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(
-        belongs_to = "super::genres::Entity",
-        from = "Column::GenreId",
-        to = "super::genres::Column::GenreId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::genres::Entity",
+    //     from = "Column::GenreId",
+    //     to = "super::genres::Column::GenreId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Genres,
 }
 
+
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into(),
+            Self::Genres => Entity::belongs_to(super::genres::Entity).from(Column::GenreId).to(super::genres::Column::GenreId).into()
+        }
+    }
+}
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Albums.def()
+    }
+}
+
+impl Related<super::genres::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Genres.def()
     }
 }
 
@@ -43,7 +58,6 @@ impl Related<super::bands::Entity> for Entity {
         Some(super::band_label::Relation::Labels.def().rev())
     }
 }
-//MANY-TO-MANY
 impl Related<super::users::Entity> for Entity {
     fn to() -> RelationDef {
         super::user_label::Relation::Users.def()
@@ -53,10 +67,5 @@ impl Related<super::users::Entity> for Entity {
     }
 }
 
-impl Related<super::genres::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Genres.def()
-    }
-}
 
 impl ActiveModelBehavior for ActiveModel {}

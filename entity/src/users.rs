@@ -22,10 +22,24 @@ pub enum Relation {
     Albums,
     Playlists,
 }
-
+impl RelationTrait for Entity {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into(),
+            Self::Albums => Entity::has_many(super::albums::Entity).into(),
+        }
+    }
+}
+// consider that probably would make sense to have a many-to-many between user and albums
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Albums.def()
+    }
+}
+
+impl Related<super::playlists::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Playlists.def()
     }
 }
 
@@ -57,16 +71,12 @@ impl Related<super::pictures::Entity> for Entity {
     }
 }
 
-impl Related<super::playlists::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Playlists.def()
-    }
-}
 
-impl Related<super::user_picture::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::UserPicture.def()
-    }
-}
+
+// impl Related<super::user_picture::Entity> for Entity {
+//     fn to() -> RelationDef {
+//         Relation::UserPicture.def()
+//     }
+// }
 
 impl ActiveModelBehavior for ActiveModel {}

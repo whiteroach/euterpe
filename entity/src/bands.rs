@@ -19,6 +19,15 @@ pub enum Relation {
     Albums,
 }
 
+//ONE-TO-MANY
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into()
+        }
+    }
+}
+
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Albums.def()
@@ -34,7 +43,6 @@ impl Related<super::labels::Entity> for Entity {
         Some(super::band_label::Relation::Bands.def().rev())
     }
 }
-//MANY-TO-MANY
 impl Related<super::pictures::Entity> for Entity {
     fn to() -> RelationDef {
         super::band_picture::Relation::Pictures.def()
@@ -43,7 +51,6 @@ impl Related<super::pictures::Entity> for Entity {
         Some(super::band_picture::Relation::Bands.def().rev())
     }
 }
-//MANY-TO-MANY
 impl Related<super::users::Entity> for Entity {
     fn to() -> RelationDef {
         super::band_user::Relation::Users.def()
