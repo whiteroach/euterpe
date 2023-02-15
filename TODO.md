@@ -15,8 +15,8 @@
         <br>
 
 - [x] Generate entities
-- [ ] Set many-to-many relationships [sea-orm doc](https://www.sea-ql.org/SeaORM/docs/relation/many-to-many/)
-- [ ] Set one-to-many relationships
+- [x] Set many-to-many relationships [sea-orm doc](https://www.sea-ql.org/SeaORM/docs/relation/many-to-many/)
+- [x] Set one-to-many relationships
 - [ ] Set up Redis
 - [ ] Add join-table label_picture and set relationships
 - [ ] Modify User and Album table (many-to-many)
