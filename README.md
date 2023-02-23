@@ -1,5 +1,3 @@
-## Euterpe
-
 Euterpe is an API that serves the imaginary Euterpe music platform.
 
 **Usage:**

@@ -20,5 +20,5 @@
 - [ ] Set up Redis
 - [ ] Add join-table label_picture and set relationships
 - [ ] Modify User and Album table (many-to-many)
-- [ ] Add docker-compose
+- [x] Add docker-compose
 - [ ] Write a seeder in SQL
