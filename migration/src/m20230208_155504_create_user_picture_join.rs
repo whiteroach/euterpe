@@ -1,6 +1,8 @@
 use sea_orm_migration::prelude::*;
 
-use crate::{m20220101_000001_create_users_table::Users, m20230126_164652_create_pictures_table::Pictures};
+use crate::{
+    m20220101_000001_create_users_table::Users, m20230126_164652_create_pictures_table::Pictures,
+};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;

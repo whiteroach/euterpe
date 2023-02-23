@@ -16,31 +16,30 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::albums::Entity")]
+    // #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(has_many = "super::band_label::Entity")]
-    BandLabel,
-    #[sea_orm(
-        belongs_to = "super::genres::Entity",
-        from = "Column::GenreId",
-        to = "super::genres::Column::GenreId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::genres::Entity",
+    //     from = "Column::GenreId",
+    //     to = "super::genres::Column::GenreId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Genres,
-    #[sea_orm(has_many = "super::user_label::Entity")]
-    UserLabel,
 }
 
+
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into(),
+            Self::Genres => Entity::belongs_to(super::genres::Entity).from(Column::GenreId).to(super::genres::Column::GenreId).into()
+        }
+    }
+}
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Albums.def()
-    }
-}
-
-impl Related<super::band_label::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::BandLabel.def()
     }
 }
 
@@ -50,10 +49,23 @@ impl Related<super::genres::Entity> for Entity {
     }
 }
 
-impl Related<super::user_label::Entity> for Entity {
+//MANY-TO-MANY
+impl Related<super::bands::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::UserLabel.def()
+        super::band_label::Relation::Bands.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_label::Relation::Labels.def().rev())
     }
 }
+impl Related<super::users::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_label::Relation::Users.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_label::Relation::Labels.def().rev())
+    }
+}
+
 
 impl ActiveModelBehavior for ActiveModel {}

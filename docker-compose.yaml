@@ -1,0 +1,36 @@
+version: "3.9"
+name: euterpe
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    networks:
+      - server-side
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=euterpe
+      - POSTGRES_PASSWORD=example
+    healthcheck:
+      test: psql -U postgres -q -d postgres -c "SELECT 'ready';"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - server-side
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+networks:
+  server-side: {}
+volumes:
+  db-data: {}

@@ -11,33 +11,17 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::bands::Entity",
-        from = "Column::BandId",
-        to = "super::bands::Column::BandId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
     Bands,
-    #[sea_orm(
-        belongs_to = "super::users::Entity",
-        from = "Column::UserId",
-        to = "super::users::Column::UserId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
     Users,
 }
 
-impl Related<super::bands::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Bands.def()
-    }
-}
-
-impl Related<super::users::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Users.def()
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Bands => Entity::belongs_to(super::bands::Entity).from(Column::band_id
+            ).to(super::albums::Column::BandId).into(),
+            Self::Users => Entity::belongs_to(super::users::Entity).from(Column::user_id).to(super::labels::Column::UserId).into(),
+        }
     }
 }
 

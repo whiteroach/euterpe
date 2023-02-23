@@ -17,36 +17,46 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::album_track::Entity")]
-    AlbumTrack,
-    #[sea_orm(
-        belongs_to = "super::genres::Entity",
-        from = "Column::GenreId",
-        to = "super::genres::Column::GenreId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::genres::Entity",
+    //     from = "Column::GenreId",
+    //     to = "super::genres::Column::GenreId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Genres,
-    #[sea_orm(has_many = "super::playlist_track::Entity")]
-    PlaylistTrack,
 }
-
-impl Related<super::album_track::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::AlbumTrack.def()
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Genres => Entity::belongs_to(super::genres::Entity).from(Column::GenreId).to(super::genres::Column::GenreId)
+        }
     }
 }
-
+//ONE-TO-MANY
 impl Related<super::genres::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Genres.def()
     }
 }
 
-impl Related<super::playlist_track::Entity> for Entity {
+//MANY-TO-MANY
+impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::PlaylistTrack.def()
+        super::album_track::Relation::Albums.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_track::Relation::Tracks.def().rev())
     }
 }
+impl Related<super::playlist::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::playlist_track::Relation::Playlist.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::playlist_track::Relation::Tracks.def().rev())
+    }
+}
+
 
 impl ActiveModelBehavior for ActiveModel {}

@@ -21,56 +21,56 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::album_picture::Entity")]
-    AlbumPicture,
-    #[sea_orm(has_many = "super::album_track::Entity")]
-    AlbumTrack,
-    #[sea_orm(
-        belongs_to = "super::bands::Entity",
-        from = "Column::BandId",
-        to = "super::bands::Column::BandId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::bands::Entity",
+    //     from = "Column::BandId",
+    //     to = "super::bands::Column::BandId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Bands,
-    #[sea_orm(
-        belongs_to = "super::genres::Entity",
-        from = "Column::GenreId",
-        to = "super::genres::Column::GenreId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::genres::Entity",
+    //     from = "Column::GenreId",
+    //     to = "super::genres::Column::GenreId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Genres,
-    #[sea_orm(
-        belongs_to = "super::labels::Entity",
-        from = "Column::LabelId",
-        to = "super::labels::Column::LabelId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::labels::Entity",
+    //     from = "Column::LabelId",
+    //     to = "super::labels::Column::LabelId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Labels,
-    #[sea_orm(
-        belongs_to = "super::users::Entity",
-        from = "Column::UserId",
-        to = "super::users::Column::UserId",
-        on_update = "NoAction",
-        on_delete = "NoAction"
-    )]
+    // #[sea_orm(
+    //     belongs_to = "super::users::Entity",
+    //     from = "Column::UserId",
+    //     to = "super::users::Column::UserId",
+    //     on_update = "NoAction",
+    //     on_delete = "NoAction"
+    // )]
     Users,
 }
 
-impl Related<super::album_picture::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::AlbumPicture.def()
+
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Bands => Entity::belongs_to(super::bands::Entity).from(Column::BandId)
+            .to(super::bands::Column::BandId).into(),
+            Self::Users => Entity::belongs_to(super::users::Entity).from(Column::UserId)
+            .to(super::users::Column::UserId).into(),
+            Self::Genres => Entity::belongs_to(super::genres::Entity).from(Column::GenreId)
+            .to(super::genres::Column::GenreId).into(),
+            Self::Labels => Entity::belongs_to(super::labels::Entity).from(Column::LabelId)
+            .to(super::labels::Column::LabelId).into(),
+        }
     }
 }
-
-impl Related<super::album_track::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::AlbumTrack.def()
-    }
-}
-
+// MANY-TO-ONE
 impl Related<super::bands::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Bands.def()
@@ -92,6 +92,27 @@ impl Related<super::labels::Entity> for Entity {
 impl Related<super::users::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Users.def()
+    }
+}
+
+
+//MANY-TO-MANY
+impl Related<super::pictures::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::album_picture::Relation::Pictures.def()
+    }
+
+    fn via() -> Option<RelationDef> {
+        Some(super::album_picture::Relation::Albums.def().rev())
+    }
+}
+//MANY-TO-MANY
+impl Related<super::tracks::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::album_track::Relation::Tracks.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_track::Relation::Albums.def().rev())
     }
 }
 

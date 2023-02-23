@@ -17,12 +17,15 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_many = "super::albums::Entity")]
     Albums,
-    #[sea_orm(has_many = "super::band_label::Entity")]
-    BandLabel,
-    #[sea_orm(has_many = "super::band_picture::Entity")]
-    BandPicture,
-    #[sea_orm(has_many = "super::band_user::Entity")]
-    BandUser,
+}
+
+//ONE-TO-MANY
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into()
+        }
+    }
 }
 
 impl Related<super::albums::Entity> for Entity {
@@ -31,21 +34,29 @@ impl Related<super::albums::Entity> for Entity {
     }
 }
 
-impl Related<super::band_label::Entity> for Entity {
+//MANY-TO-MANY
+impl Related<super::labels::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::BandLabel.def()
+        super::band_label::Relation::Labels.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_label::Relation::Bands.def().rev())
     }
 }
-
-impl Related<super::band_picture::Entity> for Entity {
+impl Related<super::pictures::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::BandPicture.def()
+        super::band_picture::Relation::Pictures.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_picture::Relation::Bands.def().rev())
     }
 }
-
-impl Related<super::band_user::Entity> for Entity {
+impl Related<super::users::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::BandUser.def()
+        super::band_user::Relation::Users.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_user::Relation::Bands.def().rev())
     }
 }
 

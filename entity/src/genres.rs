@@ -20,6 +20,16 @@ pub enum Relation {
     #[sea_orm(has_many = "super::tracks::Entity")]
     Tracks,
 }
+//ONE-TO-MANY
+impl RelationTrait for Relation {
+    fn def(&self) -> RelationDef {
+        match self {
+            Self::Albums => Entity::has_many(super::albums::Entity).into,
+            Self::Labels => Entity::has_many(super::labels::Entity).into,
+            Self::Tracks => Entity::has_many(super::tracks::Entity).into,
+        }
+    }
+}
 
 impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {

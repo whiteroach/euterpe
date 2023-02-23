@@ -11,31 +11,33 @@ pub struct Model {
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {
-    #[sea_orm(has_many = "super::album_picture::Entity")]
-    AlbumPicture,
-    #[sea_orm(has_many = "super::band_picture::Entity")]
-    BandPicture,
-    #[sea_orm(has_many = "super::user_picture::Entity")]
-    UserPicture,
-}
+pub enum Relation {}
 
-impl Related<super::album_picture::Entity> for Entity {
+//MANY-TO-MANY
+impl Related<super::albums::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AlbumPicture.def()
+        super::album_picture::Relation::Albums.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::album_picture::Relation::Pictures.def().rev())
+    }
+}
+impl Related<super::bands::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::band_picture::Relation::Bands.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::band_picture::Relation::Pictures.def().rev())
+    }
+}
+impl Related<super::users::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_picture::Relation::Users.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_picture::Relation::Pictures.def().rev())
     }
 }
 
-impl Related<super::band_picture::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::BandPicture.def()
-    }
-}
-
-impl Related<super::user_picture::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::UserPicture.def()
-    }
-}
 
 impl ActiveModelBehavior for ActiveModel {}
