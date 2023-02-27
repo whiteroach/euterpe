@@ -8,6 +8,10 @@ use migration::{Migrator, MigratorTrait};
 use routes::create_routes;
 use sea_orm::{ConnectOptions, Database};
 use tracing::{info, log};
+
+use futures::prelude::*;
+use redis::AsyncCommands;
+
 // use hyper::server::conn::AddrIncoming;
 // Server<AddrIncoming, IntoMakeService<Router<(),Body>, Exec>>::Output
 // Result< <Server<AddrIncoming, IntoMakeService<Router<(), Body>>>as IntoFuture>::Output,hyper::Error>
@@ -32,6 +36,11 @@ use tracing::{info, log};
 //     Ok(db)
 
 // }
+
+
+
+
+
 pub async fn init(database_uri: &str) {
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
@@ -52,10 +61,19 @@ pub async fn init(database_uri: &str) {
 
     Migrator::up(&db, None).await.unwrap();
 
-    let app = create_routes(db);
-    let addr = "0.0.0.0:8000".parse().unwrap();
+    let client_redis = redis::Client::open("redis://127.0.0.1/").unwrap();
+    // let client_redis = redis::Client::open("redis://localhost:6379").unwrap();
+    //let mut con = client_redis.get_async_connection().await.unwrap();
 
+    // let _ :() = con.set("key1", b"foo").await.unwrap();
+
+
+    let app = create_routes(db, client_redis);
+    let addr = "0.0.0.0:8000".parse().unwrap();
+    
     info!("listening on {}", &addr);
+    info!("connected to redis instance");
+
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
