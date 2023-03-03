@@ -1,7 +1,6 @@
 use axum::Router;
 use axum::{extract::FromRef, routing::get};
 use redis::Client;
-use redis::aio::Connection;
 use sea_orm::DatabaseConnection;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -11,11 +10,12 @@ use health_check::health_check;
 #[derive(Clone, FromRef)]
 pub struct AppState {
     database: DatabaseConnection,
+    redis: Client
 }
 
 pub fn create_routes(db: DatabaseConnection, redis:Client) -> Router<()> {
     let cors = CorsLayer::new().allow_origin(Any);
-    let app_state = AppState { database: db };
+    let app_state = AppState { database: db, redis };
 
     Router::new()
         .route("/", get(health_check))

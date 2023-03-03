@@ -78,8 +78,5 @@ pub async fn init(database_uri: &str) {
         .serve(app.into_make_service())
         .await
         .unwrap();
-    // if let Err(err) = server.await {
-    //     eprintln!("server error");
-    //     return Err("e".to_string())
-    // } else {Ok(())}
+
 }
