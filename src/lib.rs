@@ -1,25 +1,25 @@
 mod routes;
+use axum::{http::StatusCode, response::IntoResponse, Json};
 use std::time::Duration;
-use axum::{response::IntoResponse, http::StatusCode, Json};
 
 use migration::{Migrator, MigratorTrait};
 
 use routes::create_routes;
 use sea_orm::{ConnectOptions, Database};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use tracing::{info, log};
 
 //use futures::prelude::*;
 //use redis::AsyncCommands;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct ErrorResponse<T>{
+pub struct ErrorResponse<T> {
     pub error: T,
 }
 
 #[derive(Debug)]
 pub enum EuterpeError {
-    DatabaseError(sea_orm::DbErr)
+    DatabaseError(sea_orm::DbErr),
 }
 impl From<sea_orm::DbErr> for EuterpeError {
     fn from(error: sea_orm::DbErr) -> Self {
@@ -32,16 +32,14 @@ impl IntoResponse for EuterpeError {
         match self {
             EuterpeError::DatabaseError(err) => (
                 StatusCode::INTERNAL_SERVER_ERROR,
-                Json(
-                    ErrorResponse {
-                        error: format!("Internal Server Error {}", err)
-                    }
-                )
-            ).into_response()
+                Json(ErrorResponse {
+                    error: format!("Internal Server Error {}", err),
+                }),
+            )
+                .into_response(),
         }
     }
 }
-
 
 pub async fn init(database_uri: &str) {
     tracing_subscriber::fmt()
@@ -68,10 +66,9 @@ pub async fn init(database_uri: &str) {
 
     // let _ :() = con.set("key1", b"foo").await.unwrap();
 
-
     let app = create_routes(db, client_redis);
     let addr = "0.0.0.0:8000".parse().unwrap();
-    
+
     info!("listening on {}", &addr);
     info!("connected to redis instance");
 
@@ -79,5 +76,4 @@ pub async fn init(database_uri: &str) {
         .serve(app.into_make_service())
         .await
         .unwrap();
-
 }

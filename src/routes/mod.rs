@@ -10,12 +10,15 @@ use health_check::health_check;
 #[derive(Clone, FromRef)]
 pub struct AppState {
     database: DatabaseConnection,
-    redis: Client
+    redis: Client,
 }
 
-pub fn create_routes(db: DatabaseConnection, redis:Client) -> Router<()> {
+pub fn create_routes(db: DatabaseConnection, redis: Client) -> Router<()> {
     let cors = CorsLayer::new().allow_origin(Any);
-    let app_state = AppState { database: db, redis };
+    let app_state = AppState {
+        database: db,
+        redis,
+    };
 
     Router::new()
         .route("/", get(health_check))
