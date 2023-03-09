@@ -1,44 +1,46 @@
 mod routes;
 use std::time::Duration;
-// use axum::Server;
-// use hyper::StatusCode;
-// use axum::{routing::IntoMakeService, Server, Router, body::Body};
+use axum::{response::IntoResponse, http::StatusCode, Json};
+
 use migration::{Migrator, MigratorTrait};
 
 use routes::create_routes;
 use sea_orm::{ConnectOptions, Database};
+use serde::{Serialize, Deserialize};
 use tracing::{info, log};
 
-use futures::prelude::*;
-use redis::AsyncCommands;
+//use futures::prelude::*;
+//use redis::AsyncCommands;
 
-// use hyper::server::conn::AddrIncoming;
-// Server<AddrIncoming, IntoMakeService<Router<(),Body>, Exec>>::Output
-// Result< <Server<AddrIncoming, IntoMakeService<Router<(), Body>>>as IntoFuture>::Output,hyper::Error>
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ErrorResponse<T>{
+    pub error: T,
+}
 
-// async fn database_connector(uri: &str) -> Result<DatabaseConnection,DbErr>{
-//     tracing_subscriber::fmt()
-//     .with_max_level(tracing::Level::DEBUG)
-//     .with_test_writer()
-//     .init();
-// let mut opt = ConnectOptions::new(uri.to_owned());
-// opt.max_connections(100)
-//     .min_connections(5)
-//     .connect_timeout(Duration::from_secs(8))
-//     .acquire_timeout(Duration::from_secs(8))
-//     .idle_timeout(Duration::from_secs(8))
-//     .max_lifetime(Duration::from_secs(8))
-//     .sqlx_logging(true)
-//     .sqlx_logging_level(log::LevelFilter::Info);
-// // .set_schema_search_path("euterpe_schema".into());
-// // let db = Database::connect(opt).await?
-//     let db = Database::connect(opt).await?;
-//     Ok(db)
+#[derive(Debug)]
+pub enum EuterpeError {
+    DatabaseError(sea_orm::DbErr)
+}
+impl From<sea_orm::DbErr> for EuterpeError {
+    fn from(error: sea_orm::DbErr) -> Self {
+        EuterpeError::DatabaseError(error)
+    }
+}
 
-// }
-
-
-
+impl IntoResponse for EuterpeError {
+    fn into_response(self) -> axum::response::Response {
+        match self {
+            EuterpeError::DatabaseError(err) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(
+                    ErrorResponse {
+                        error: format!("Internal Server Error {}", err)
+                    }
+                )
+            ).into_response()
+        }
+    }
+}
 
 
 pub async fn init(database_uri: &str) {
@@ -57,7 +59,6 @@ pub async fn init(database_uri: &str) {
         .sqlx_logging_level(log::LevelFilter::Info);
     // .set_schema_search_path("euterpe_schema".into());
     let db = Database::connect(opt).await.unwrap();
-    // let db = database_connector(database_uri).await.map_err(|e|{ return "Hey".to_owned()})?;
 
     Migrator::up(&db, None).await.unwrap();
 
